@@ -117,8 +117,9 @@
           console.log("clicked A");
           event.preventDefault();
           const linkUrl = event.target.href;
+          // deployed : https://wikipedia-scraper-vmuk.onrender.com  // local : "http://127.0.0.1:5000",
           const url = linkUrl.replace(
-            "http://127.0.0.1:5000",
+            "https://wikipedia-scraper-vmuk.onrender.com",
             "https://en.wikipedia.org"
           );
           if (url) {
