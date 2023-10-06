@@ -44,7 +44,7 @@
           id="change-search-icon-color"
           class="text-2xl font-semibold mb-6 text-black dark:text-white"
         >
-          Search
+          Search Wikipedia URL
         </h2>
         <form action="/submit" method="POST" class="relative">
           <input
@@ -82,11 +82,12 @@
       <i class="fas fa-moon"></i>
     </button>
     <div
-      class="container mx-auto max-w-screen-xl w-full sm:w-4/5 md:w-3/5 lg:w-3/5 xl:w-3/5"
+      id="result-container"
+      class="container mx-auto max-w-screen-xl w-full sm:w-4/5 md:w-3/5 lg:w-3/5 xl:w-3/5 invisible"
     >
       <p
         id="result-paragraph"
-        class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 dark:bg-gray-800"
+        class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 text-black dark:bg-gray-800"
       ></p>
     </div>
 
@@ -100,6 +101,7 @@
       const searchIcon = document.getElementById("searchIcon");
       const urlInput = document.getElementById("urlInput");
       const resultParagraph = document.getElementById("result-paragraph");
+      const resultContainer = document.getElementById("result-container");
 
       toggleDarkModeButton.addEventListener("click", () => {
         if (isDarkMode) {
@@ -168,8 +170,9 @@
           })
             .then((response) => response.json())
             .then((res) => {
-              console.log(res.data);
               resultParagraph.innerHTML = res.data;
+              resultContainer.classList.remove("invisible");
+              resultContainer.classList.add("visible");
             })
             .catch((error) => {
               console.error(error);
