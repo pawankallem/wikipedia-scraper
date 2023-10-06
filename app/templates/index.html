@@ -4,33 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wikipedia scraper</title>
-    <!-- Include Tailwind CSS via CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <!-- Include Font Awesome via CDN for moon and sun icons -->
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
       rel="stylesheet"
     />
-    <style>
-      body {
-        background-color: #1a202c;
-        color: #ffffff;
-        transition: background-color 0.3s, color 0.3s;
-      }
-      .toggle-button {
-        position: fixed;
-        top: 1rem;
-        right: 1rem;
-        z-index: 999;
-      }
-
-      a {
-        color: blue;
-      }
-    </style>
+    <link href="../static/css/index.css" rel="stylesheet" />
   </head>
   <body class="py-10">
     <div
@@ -46,16 +28,18 @@
         >
           Search Wikipedia URL
         </h2>
-        <form action="/submit" method="POST" class="relative">
+        <form action="" onsubmit="handleSearch(event)" class="relative">
           <input
             class="py-2 pl-4 pr-12 block w-full rounded-lg bg-gray-200 border-none focus:outline-none focus:ring-0 text-black dark:text-white"
             id="urlInput"
             type="text"
             placeholder="Enter Wikipedia URL..."
+            onchange="handleChange(event)"
           />
           <span
             class="search-icon absolute inset-y-0 right-0 pr-4 flex items-center"
             id="searchIcon"
+            onclick="handleSearch(event)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -78,6 +62,7 @@
     <button
       id="toggleDarkMode"
       class="toggle-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
+      onclick="handleToggle()"
     >
       <i class="fas fa-moon"></i>
     </button>
@@ -91,94 +76,6 @@
       ></p>
     </div>
 
-    <script>
-      const darkModeClassName = "dark";
-      let isDarkMode = true;
-      const body = document.body;
-      const toggleDarkModeButton = document.getElementById("toggleDarkMode");
-      const searchContainer = document.getElementById("search-container");
-      const searchHeading = document.getElementById("change-search-icon-color");
-      const searchIcon = document.getElementById("searchIcon");
-      const urlInput = document.getElementById("urlInput");
-      const resultParagraph = document.getElementById("result-paragraph");
-      const resultContainer = document.getElementById("result-container");
-
-      toggleDarkModeButton.addEventListener("click", () => {
-        if (isDarkMode) {
-          body.style.backgroundColor = "#ffffff";
-          body.style.color = "#1a202c";
-          searchHeading.style.color = "#ffffff";
-          searchContainer.style.backgroundColor = "#1a202c";
-          searchContainer.style.color = "#ffffff";
-          resultParagraph.style.backgroundColor = "#1a202c";
-          resultParagraph.style.color = "#ffffff";
-          toggleDarkModeButton.innerHTML = '<i class="fas fa-sun"></i>';
-        } else {
-          body.style.backgroundColor = "#1a202c";
-          body.style.color = "#ffffff";
-          searchHeading.style.color = "#1a202c";
-          searchContainer.style.backgroundColor = "#ffffff";
-          searchContainer.style.color = "#1a202c";
-          resultParagraph.style.backgroundColor = "#ffffff";
-          resultParagraph.style.color = "#1a202c";
-          toggleDarkModeButton.innerHTML = '<i class="fas fa-moon"></i>';
-        }
-        isDarkMode = !isDarkMode;
-      });
-
-      resultParagraph.addEventListener("click", (event) => {
-        console.log("clicked");
-        if (event.target.tagName === "A") {
-          console.log("clicked A");
-          event.preventDefault();
-          const linkUrl = event.target.href;
-          // deployed : https://wikipedia-scraper-vmuk.onrender.com  // local : "http://127.0.0.1:5000",
-          const url = linkUrl.replace(
-            // "http://127.0.0.1:5000",
-            "https://wikipedia-scraper-vmuk.onrender.com",
-            "https://en.wikipedia.org"
-          );
-          if (url) {
-            fetch("/execute_url", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-              },
-              body: `urlInput=${encodeURIComponent(url)}`,
-            })
-              .then((response) => response.json())
-              .then((res) => {
-                console.log(res.data);
-                resultParagraph.innerHTML = res.data;
-              })
-              .catch((error) => {
-                console.error(error);
-              });
-          }
-        }
-      });
-
-      searchIcon.addEventListener("click", () => {
-        const url = urlInput.value;
-        if (url) {
-          fetch("/execute_url", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `urlInput=${encodeURIComponent(url)}`,
-          })
-            .then((response) => response.json())
-            .then((res) => {
-              resultParagraph.innerHTML = res.data;
-              resultContainer.classList.remove("invisible");
-              resultContainer.classList.add("visible");
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        }
-      });
-    </script>
+    <script src="../static/javascript/index.js"></script>
   </body>
 </html>
