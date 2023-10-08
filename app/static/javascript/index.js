@@ -14,13 +14,15 @@ const hexCodes = {
   white: "#ffffff",
   dark: "#1a202c",
 };
+const isLoading = false;
 
 const handleSearch = (event) => {
   event.preventDefault();
   const url = urlInput.value;
-  if (url) {
+  if (url && !isLoading) {
     fetchData(url)
     loader.style.display="block";
+    isLoading = true;
   };
 };
 
@@ -48,9 +50,11 @@ const fetchData = (url) => {
       resultParagraph.innerHTML = data.data;
       resultContainer.classList.remove("invisible");
       resultContainer.classList.add("visible");
+      isLoading = false;
       loader.style.display="none";
     })
     .catch((error) => {
+      isLoading = false;
       loader.style.display="none";
       console.error(error);
     });
@@ -87,9 +91,10 @@ resultParagraph.addEventListener("click", (event) => {
       "https://wikipedia-scraper-vmuk.onrender.com",
       "https://en.wikipedia.org"
     );
-    if (url) {
+    if (url && !isLoading) {
       fetchData(url);
       loader.style.display="block";
+      isLoading = true;
     };
   }
 });
