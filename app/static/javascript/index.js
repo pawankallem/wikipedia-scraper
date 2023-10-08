@@ -9,28 +9,36 @@ const urlInput = document.getElementById("urlInput");
 const resultParagraph = document.getElementById("result-paragraph");
 const resultContainer = document.getElementById("result-container");
 const loader = document.getElementById("loader");
-document.body.style.backgroundImage = 'url(static/assets/moonlight.jpg)';
+document.body.style.backgroundImage = "url(static/assets/moonlight.jpg)";
 const hexCodes = {
   white: "#ffffff",
   dark: "#1a202c",
 };
 let isLoading = false;
+const wikiURL = "https://en.wikipedia.org/wiki/";
+const domainURL = "https://wikipedia-scraper-vmuk.onrender.com"; // "http://127.0.0.1:5000";
 
 const handleSearch = (event) => {
   event.preventDefault();
   const url = urlInput.value;
+  if (!url.includes(wikiURL)) {
+    alert(
+      `Please enter valid Wikipedia URL (example : ${wikiURL}{seach_word})`
+    );
+    return;
+  }
   if (url && !isLoading) {
-    fetchData(url)
-    loader.style.display="block";
+    fetchData(url);
+    loader.style.display = "block";
     isLoading = true;
-  };
+  }
 };
 
 const handleToggle = () => {
   if (isDarkMode) {
-    document.body.style.backgroundImage = 'url(static/assets/sunraise.jpg)';
+    document.body.style.backgroundImage = "url(static/assets/sunraise.jpg)";
   } else {
-    document.body.style.backgroundImage = 'url(static/assets/moonlight.jpg)';
+    document.body.style.backgroundImage = "url(static/assets/moonlight.jpg)";
   }
   if (isDarkMode) handleDarkMode();
   else handleLightMode();
@@ -51,11 +59,11 @@ const fetchData = (url) => {
       resultContainer.classList.remove("invisible");
       resultContainer.classList.add("visible");
       isLoading = false;
-      loader.style.display="none";
+      loader.style.display = "none";
     })
     .catch((error) => {
       isLoading = false;
-      loader.style.display="none";
+      loader.style.display = "none";
       console.error(error);
     });
 };
@@ -86,15 +94,11 @@ resultParagraph.addEventListener("click", (event) => {
   if (event.target.tagName === "A") {
     event.preventDefault();
     const linkUrl = event.target.href;
-    const url = linkUrl.replace(
-      // "http://127.0.0.1:5000",
-      "https://wikipedia-scraper-vmuk.onrender.com",
-      "https://en.wikipedia.org"
-    );
+    const url = linkUrl.replace(`${domainURL}/wiki/`, wikiURL);
     if (url && !isLoading) {
       fetchData(url);
-      loader.style.display="block";
+      loader.style.display = "block";
       isLoading = true;
-    };
+    }
   }
 });
