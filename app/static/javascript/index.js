@@ -8,7 +8,8 @@ const searchIcon = document.getElementById("searchIcon");
 const urlInput = document.getElementById("urlInput");
 const resultParagraph = document.getElementById("result-paragraph");
 const resultContainer = document.getElementById("result-container");
-
+const loader = document.getElementById("loader");
+document.body.style.backgroundImage = 'url(static/assets/moonlight.jpg)';
 const hexCodes = {
   white: "#ffffff",
   dark: "#1a202c",
@@ -17,11 +18,18 @@ const hexCodes = {
 const handleSearch = (event) => {
   event.preventDefault();
   const url = urlInput.value;
-  console.log("url of : ", url);
-  if (url) fetchData(url);
+  if (url) {
+    fetchData(url)
+    loader.style.display="block";
+  };
 };
 
 const handleToggle = () => {
+  if (isDarkMode) {
+    document.body.style.backgroundImage = 'url(static/assets/sunraise.jpg)';
+  } else {
+    document.body.style.backgroundImage = 'url(static/assets/moonlight.jpg)';
+  }
   if (isDarkMode) handleDarkMode();
   else handleLightMode();
   isDarkMode = !isDarkMode;
@@ -40,8 +48,10 @@ const fetchData = (url) => {
       resultParagraph.innerHTML = data.data;
       resultContainer.classList.remove("invisible");
       resultContainer.classList.add("visible");
+      loader.style.display="none";
     })
     .catch((error) => {
+      loader.style.display="none";
       console.error(error);
     });
 };
@@ -77,6 +87,9 @@ resultParagraph.addEventListener("click", (event) => {
       "https://wikipedia-scraper-vmuk.onrender.com",
       "https://en.wikipedia.org"
     );
-    if (url) fetchData(url);
+    if (url) {
+      fetchData(url);
+      loader.style.display="block";
+    };
   }
 });

@@ -34,7 +34,6 @@
             id="urlInput"
             type="text"
             placeholder="Enter Wikipedia URL..."
-            onchange="handleChange(event)"
           />
           <span
             class="search-icon absolute inset-y-0 right-0 pr-4 flex items-center"
@@ -74,6 +73,9 @@
         id="result-paragraph"
         class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 text-black dark:bg-gray-800"
       ></p>
+    </div>
+    <div id="loader">
+      <div class="lds-hourglass"></div>
     </div>
 
     <script src="../static/javascript/index.js"></script>
