@@ -14,7 +14,7 @@ const hexCodes = {
   white: "#ffffff",
   dark: "#1a202c",
 };
-const isLoading = false;
+let isLoading = false;
 
 const handleSearch = (event) => {
   event.preventDefault();
