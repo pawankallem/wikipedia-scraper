@@ -5,11 +5,13 @@ from bs4 import BeautifulSoup
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return jsonify("server listening now .... ")
+    # return render_template("index.html")
 
 @app.post('/execute_url')
 def execute_url():
-    url = request.form.get('urlInput')
+    req = request.json
+    url = req.get("url")
     try:
         response = requests.get(url)
         response.raise_for_status()
